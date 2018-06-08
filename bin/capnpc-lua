@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=0.1.1-1
+VERSION=0.1.2-1
 
 usage() {
     cat <<EOF
@@ -22,7 +22,7 @@ exit
 }
 
 version() {
-    echo "Cap'n Proto lua plugin version $VERSION"
+    echo "Cap'n Proto Lua plug-in version $VERSION"
     exit
 }
 

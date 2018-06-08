@@ -1,4 +1,4 @@
-VERSION:=0.1.1-1
+VERSION:=0.1.2-1
 CXXFLAGS:=-std=gnu++11 -g -Iproto -I/usr/local/include
 LDFLAGS:=-L/usr/local/lib -lcapnp -lkj -pthread
 CAPNP_TEST:=../capnp_test
@@ -31,7 +31,7 @@ cpp/main: cpp/main.o cpp/example_capnp.o cpp/enums_capnp.o
 proto/example_capnp.lua: proto/example.capnp proto/enums.capnp proto/struct.capnp proto/lua.capnp
 	capnp compile -obin/capnpc-lua $+
 
-test: proto/example_capnp.lua
+test: clean proto/example_capnp.lua
 	tests/run_tests.sh
 
 test1:
@@ -45,7 +45,7 @@ clean:
 
 tag_and_pack:
 	@echo "Add git tag v$(VERSION)?"
-	@read
+	@read -r FOO
 	git tag -f v$(VERSION)
 	git push --tags
 	cp lua-capnproto.rockspec lua-capnproto-$(VERSION).rockspec
@@ -58,6 +58,8 @@ version:
 	@read new_version; perl -pi -e "s/$(VERSION)/$$new_version/" Makefile bin/capnpc-lua lua-capnproto.rockspec
 
 release: tag_and_pack version
-	
+
+release_clean:
+	-rm -f lua-capnproto-*.rockspec *.rock
 
 .PHONY: all clean test release
