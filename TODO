@@ -1,0 +1,9 @@
+* performance turing
+* multiple files input
+* make capnpc-llua work
+* fix 0-item list
+* calculate new_tab arguments
+* AnyPointer support
+* uInt8DefaultValueTest decoding test case
+* packing/unpacking
+* compatibility with old formats
