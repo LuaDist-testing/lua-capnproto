@@ -1,7 +1,10 @@
 @0xa0d78d3689d48a0b;
 
 using import "enums.capnp".EnumType2;
+using import "struct.capnp".S1;
 using Lua = import "lua.capnp";
+
+const pi :Float32 = 3.14159;
 
 struct T1 {
     struct T2 {
@@ -27,6 +30,8 @@ struct T1 {
         enum1 @0;
         enum2 @1;
         enum3 @2;
+        enum4 @3 $Lua.literal("wEirdENum4");
+        upperDash @4 $Lua.naming("upper_dash");
     }
 
     # unnamed union
@@ -68,4 +73,8 @@ struct T1 {
 #            b2 @19 :Bool;
 #        }
 #    }
+    const welcomeText :Text = "Hello";
+# Doesn't work for now
+#    const constT2 :T2 = (f0 = 12345.67, f1 = 9876.54, sd0 = "\0\1\2\3");
+    u64 @27 :UInt64;
 }

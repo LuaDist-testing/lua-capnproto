@@ -3,7 +3,7 @@ local lunit = require "lunitx"
 local capnp = require "capnp"
 local util = require "capnp.util"
 
-hw_capnp = require "handwritten_capnp"
+hw_capnp = require "example_capnp"
 --local format = string.format
 
 local tdiff = util.table_diff
@@ -26,7 +26,7 @@ function test_basic_value()
         i0 = 32,
     }
 
-    assert_equal(120, hw_capnp.T1.calc_size(data))
+    assert_equal(128, hw_capnp.T1.calc_size(data))
     local bin   = hw_capnp.T1.serialize(data)
     copy  = hw_capnp.T1.parse(bin, copy)
     assert_equal(data.i0, copy.i0)
@@ -36,7 +36,7 @@ function test_basic_value()
     assert_equal(false, copy.b1)
     assert_equal(0, copy.i3)
     assert_equal("enum1", copy.e0)
-    assert_equal("enum5", copy.e1)
+    assert_equal("none", copy.e1)
     assert_nil(copy.s0)
     assert_nil(copy.l0)
     assert_nil(copy.t0)
@@ -47,7 +47,7 @@ function test_basic_value1()
         b0 = true,
     }
 
-    assert_equal(120, hw_capnp.T1.calc_size(data))
+    assert_equal(128, hw_capnp.T1.calc_size(data))
     local bin   = hw_capnp.T1.serialize(data)
     copy  = hw_capnp.T1.parse(bin, copy)
     assert_equal(0, copy.i0)
@@ -57,7 +57,7 @@ function test_basic_value1()
     assert_equal(false, copy.b1)
     assert_equal(0, copy.i3)
     assert_equal("enum1", copy.e0)
-    assert_equal("enum5", copy.e1)
+    assert_equal("none", copy.e1)
     assert_nil(copy.s0)
     assert_nil(copy.l0)
     assert_nil(copy.t0)
@@ -68,7 +68,7 @@ function test_basic_value2()
         i2 = -8,
     }
 
-    assert_equal(120, hw_capnp.T1.calc_size(data))
+    assert_equal(128, hw_capnp.T1.calc_size(data))
     local bin   = hw_capnp.T1.serialize(data)
     copy  = hw_capnp.T1.parse(bin, copy)
     assert_equal(0, copy.i0)
@@ -78,7 +78,7 @@ function test_basic_value2()
     assert_equal(false, copy.b1)
     assert_equal(0, copy.i3)
     assert_equal("enum1", copy.e0)
-    assert_equal("enum5", copy.e1)
+    assert_equal("none", copy.e1)
     assert_nil(copy.s0)
     assert_nil(copy.l0)
     assert_nil(copy.t0)
@@ -89,7 +89,7 @@ function test_basic_value3()
         s0 = {},
     }
 
-    assert_equal(144, hw_capnp.T1.calc_size(data))
+    assert_equal(152, hw_capnp.T1.calc_size(data))
     local bin   = hw_capnp.T1.serialize(data)
     copy  = hw_capnp.T1.parse(bin, copy)
     assert_equal(0, copy.i0)
@@ -99,7 +99,7 @@ function test_basic_value3()
     assert_equal(false, copy.b1)
     assert_equal(0, copy.i3)
     assert_equal("enum1", copy.e0)
-    assert_equal("enum5", copy.e1)
+    assert_equal("none", copy.e1)
     assert_not_nil(copy.s0)
     assert_equal(0, copy.s0.f0)
     assert_equal(0, copy.s0.f1)
@@ -115,7 +115,7 @@ function test_basic_value4()
         },
     }
 
-    assert_equal(128, hw_capnp.T1.calc_size(data))
+    assert_equal(136, hw_capnp.T1.calc_size(data))
     local bin   = hw_capnp.T1.serialize(data)
     copy  = hw_capnp.T1.parse(bin, copy)
     assert_equal(0, copy.i0)
@@ -125,7 +125,7 @@ function test_basic_value4()
     assert_equal(false, copy.b1)
     assert_equal(0, copy.i3)
     assert_equal("enum1", copy.e0)
-    assert_equal("enum5", copy.e1)
+    assert_equal("none", copy.e1)
     assert_not_nil(copy.s0)
     assert_equalf(3.1400001049042, copy.s0.f0)
     assert_equal(3.1415926535, copy.s0.f1)
@@ -138,7 +138,7 @@ function test_basic_value4()
         l0 = { 1, -1, 127 }
     }
 
-    assert_equal(128, hw_capnp.T1.calc_size(data))
+    assert_equal(136, hw_capnp.T1.calc_size(data))
     local bin   = hw_capnp.T1.serialize(data)
     copy  = hw_capnp.T1.parse(bin, copy)
     assert_equal(0, copy.i0)
@@ -148,7 +148,7 @@ function test_basic_value4()
     assert_equal(false, copy.b1)
     assert_equal(0, copy.i3)
     assert_equal("enum1", copy.e0)
-    assert_equal("enum5", copy.e1)
+    assert_equal("none", copy.e1)
     assert_nil(copy.s0)
     assert_equal(3, #copy.l0)
     assert_equal(1, copy.l0[1])
@@ -162,7 +162,7 @@ function test_basic_value5()
         t0 = "1234567890~!#$%^&*()-=_+[]{};':|,.<>/?"
     }
 
-    assert_equal(120 + 40, hw_capnp.T1.calc_size(data))
+    assert_equal(128 + 40, hw_capnp.T1.calc_size(data))
     local bin   = hw_capnp.T1.serialize(data)
     copy  = hw_capnp.T1.parse(bin, copy)
     assert_equal(0, copy.i0)
@@ -172,7 +172,7 @@ function test_basic_value5()
     assert_equal(false, copy.b1)
     assert_equal(0, copy.i3)
     assert_equal("enum1", copy.e0)
-    assert_equal("enum5", copy.e1)
+    assert_equal("none", copy.e1)
     assert_nil(copy.s0)
     assert_nil(copy.l0)
     assert_equal(38, #copy.t0)
@@ -197,7 +197,8 @@ function test_basic_value6()
         e1 = "enum7",
     }
 
-    assert_equal(120 + 24 + 8 + 8, hw_capnp.T1.calc_size(data))
+    -- header + T1.size + T2.size + l0 + t0
+    assert_equal(16 + 112 + 24 + 8 + 8, hw_capnp.T1.calc_size(data))
     local bin   = hw_capnp.T1.serialize(data)
     util.write_file("dump", bin)
     copy  = hw_capnp.T1.parse(bin, copy)
@@ -224,7 +225,7 @@ function test_union_value()
         ui1 = 32,
     }
 
-    assert_equal(120, hw_capnp.T1.calc_size(data))
+    assert_equal(128, hw_capnp.T1.calc_size(data))
     local bin   = hw_capnp.T1.serialize(data)
     copy  = hw_capnp.T1.parse(bin, copy)
     assert_equal(0, copy.i0)
@@ -234,7 +235,7 @@ function test_union_value()
     assert_equal(false, copy.b1)
     assert_equal(0, copy.i3)
     assert_equal("enum1", copy.e0)
-    assert_equal("enum5", copy.e1)
+    assert_equal("none", copy.e1)
     assert_nil(copy.s0)
     assert_nil(copy.l0)
     assert_nil(copy.t0)
@@ -248,7 +249,7 @@ function test_union_value()
         uv0 = "Void",
     }
 
-    assert_equal(120, hw_capnp.T1.calc_size(data))
+    assert_equal(128, hw_capnp.T1.calc_size(data))
     local bin   = hw_capnp.T1.serialize(data)
     copy  = hw_capnp.T1.parse(bin, copy)
     assert_equal(0, copy.i0)
@@ -258,7 +259,7 @@ function test_union_value()
     assert_equal(false, copy.b1)
     assert_equal(0, copy.i3)
     assert_equal("enum1", copy.e0)
-    assert_equal("enum5", copy.e1)
+    assert_equal("none", copy.e1)
     assert_nil(copy.s0)
     assert_nil(copy.l0)
     assert_nil(copy.t0)
@@ -274,7 +275,7 @@ function test_union_value()
         },
     }
 
-    assert_equal(120, hw_capnp.T1.calc_size(data))
+    assert_equal(128, hw_capnp.T1.calc_size(data))
     local bin   = hw_capnp.T1.serialize(data)
     copy  = hw_capnp.T1.parse(bin, copy)
     assert_equal(0, copy.i0)
@@ -284,7 +285,7 @@ function test_union_value()
     assert_equal(false, copy.b1)
     assert_equal(0, copy.i3)
     assert_equal("enum1", copy.e0)
-    assert_equal("enum5", copy.e1)
+    assert_equal("none", copy.e1)
     assert_nil(copy.s0)
     assert_nil(copy.l0)
     assert_nil(copy.t0)
@@ -301,7 +302,7 @@ function test_union_group()
         },
     }
 
-    assert_equal(120, hw_capnp.T1.calc_size(data))
+    assert_equal(128, hw_capnp.T1.calc_size(data))
     local bin   = hw_capnp.T1.serialize(data)
     copy  = hw_capnp.T1.parse(bin, copy)
     assert_equal(0, copy.i0)
@@ -311,7 +312,7 @@ function test_union_group()
     assert_equal(false, copy.b1)
     assert_equal(0, copy.i3)
     assert_equal("enum1", copy.e0)
-    assert_equal("enum5", copy.e1)
+    assert_equal("none", copy.e1)
     assert_nil(copy.s0)
     assert_nil(copy.l0)
     assert_nil(copy.t0)
@@ -332,7 +333,7 @@ function test_union_group1()
         },
     }
 
-    assert_equal(120, hw_capnp.T1.calc_size(data))
+    assert_equal(128, hw_capnp.T1.calc_size(data))
     local bin   = hw_capnp.T1.serialize(data)
     copy  = hw_capnp.T1.parse(bin, copy)
     assert_equal(0, copy.i0)
@@ -342,7 +343,7 @@ function test_union_group1()
     assert_equal(false, copy.b1)
     assert_equal(0, copy.i3)
     assert_equal("enum1", copy.e0)
-    assert_equal("enum5", copy.e1)
+    assert_equal("none", copy.e1)
     assert_nil(copy.s0)
     assert_nil(copy.l0)
     assert_nil(copy.t0)
@@ -365,7 +366,7 @@ function test_union_group2()
         },
     }
 
-    assert_equal(120, hw_capnp.T1.calc_size(data))
+    assert_equal(128, hw_capnp.T1.calc_size(data))
     local bin   = hw_capnp.T1.serialize(data)
     copy  = hw_capnp.T1.parse(bin, copy)
     assert_equal(0, copy.i0)
@@ -375,7 +376,7 @@ function test_union_group2()
     assert_equal(false, copy.b1)
     assert_equal(0, copy.i3)
     assert_equal("enum1", copy.e0)
-    assert_equal("enum5", copy.e1)
+    assert_equal("none", copy.e1)
     assert_nil(copy.s0)
     assert_nil(copy.l0)
     assert_nil(copy.t0)
@@ -404,7 +405,7 @@ function test_struct_list()
         },
     }
 
-    assert_equal(120 + 8 + 24 * 2, hw_capnp.T1.calc_size(data))
+    assert_equal(128 + 8 + 24 * 2, hw_capnp.T1.calc_size(data))
     local bin   = hw_capnp.T1.serialize(data)
     copy  = hw_capnp.T1.parse(bin, copy)
     assert_equal(0, copy.i0)
@@ -414,7 +415,7 @@ function test_struct_list()
     assert_equal(false, copy.b1)
     assert_equal(0, copy.i3)
     assert_equal("enum1", copy.e0)
-    assert_equal("enum5", copy.e1)
+    assert_equal("none", copy.e1)
     assert_nil(copy.s0)
     assert_nil(copy.l0)
     assert_nil(copy.t0)
@@ -436,7 +437,7 @@ function test_default_value()
     local data = {
     }
 
-    assert_equal(120, hw_capnp.T1.calc_size(data))
+    assert_equal(128, hw_capnp.T1.calc_size(data))
     local bin   = hw_capnp.T1.serialize(data)
     copy  = hw_capnp.T1.parse(bin, copy)
     assert_equal(0, copy.i0)
@@ -446,7 +447,7 @@ function test_default_value()
     assert_equal(false, copy.b1)
     assert_equal(0, copy.i3)
     assert_equal("enum1", copy.e0)
-    assert_equal("enum5", copy.e1)
+    assert_equal("none", copy.e1)
     assert_nil(copy.s0)
     assert_nil(copy.l0)
     assert_nil(copy.t0)
@@ -466,7 +467,7 @@ function test_default_value1()
         du0 = 630,
     }
 
-    assert_equal(120, hw_capnp.T1.calc_size(data))
+    assert_equal(128, hw_capnp.T1.calc_size(data))
     local bin   = hw_capnp.T1.serialize(data)
     copy  = hw_capnp.T1.parse(bin, copy)
     assert_equal(0, copy.i0)
@@ -476,7 +477,7 @@ function test_default_value1()
     assert_equal(false, copy.b1)
     assert_equal(0, copy.i3)
     assert_equal("enum1", copy.e0)
-    assert_equal("enum5", copy.e1)
+    assert_equal("none", copy.e1)
     assert_nil(copy.s0)
     assert_nil(copy.l0)
     assert_nil(copy.t0)
@@ -495,7 +496,7 @@ function test_default_value2()
         db0 = true
     }
 
-    assert_equal(120, hw_capnp.T1.calc_size(data))
+    assert_equal(128, hw_capnp.T1.calc_size(data))
     local bin   = hw_capnp.T1.serialize(data)
     copy  = hw_capnp.T1.parse(bin, copy)
     assert_equal(0, copy.i0)
@@ -505,7 +506,7 @@ function test_default_value2()
     assert_equal(false, copy.b1)
     assert_equal(0, copy.i3)
     assert_equal("enum1", copy.e0)
-    assert_equal("enum5", copy.e1)
+    assert_equal("none", copy.e1)
     assert_nil(copy.s0)
     assert_nil(copy.l0)
     assert_nil(copy.t0)
@@ -525,7 +526,7 @@ function test_reserved_word()
         ["end"] = true
     }
 
-    assert_equal(120, hw_capnp.T1.calc_size(data))
+    assert_equal(128, hw_capnp.T1.calc_size(data))
     local bin   = hw_capnp.T1.serialize(data)
     copy  = hw_capnp.T1.parse(bin, copy)
     assert_equal(0, copy.i0)
@@ -535,7 +536,7 @@ function test_reserved_word()
     assert_equal(false, copy.b1)
     assert_equal(0, copy.i3)
     assert_equal("enum1", copy.e0)
-    assert_equal("enum5", copy.e1)
+    assert_equal("none", copy.e1)
     assert_nil(copy.s0)
     assert_nil(copy.l0)
     assert_nil(copy.t0)
@@ -559,7 +560,7 @@ function test_list_of_text()
         }
     }
 
-    assert_equal(120 + 4 * 8 + 8 + 8 + 16 + 16, hw_capnp.T1.calc_size(data))
+    assert_equal(128 + 4 * 8 + 8 + 8 + 16 + 16, hw_capnp.T1.calc_size(data))
     local bin   = hw_capnp.T1.serialize(data)
     copy  = hw_capnp.T1.parse(bin, copy)
     assert_equal(0, copy.i0)
@@ -569,7 +570,7 @@ function test_list_of_text()
     assert_equal(false, copy.b1)
     assert_equal(0, copy.i3)
     assert_equal("enum1", copy.e0)
-    assert_equal("enum5", copy.e1)
+    assert_equal("none", copy.e1)
     assert_nil(copy.s0)
     assert_nil(copy.l0)
     assert_nil(copy.t0)
@@ -594,6 +595,91 @@ function test_list_of_text()
     assert_equal(data.lt0[2], copy.lt0[2])
     assert_equal(data.lt0[3], copy.lt0[3])
     assert_equal(data.lt0[4], copy.lt0[4])
+end
+
+function test_const()
+    assert_equal(3.14159, hw_capnp.pi)
+    assert_equal("Hello", hw_capnp.T1.welcomeText)
+end
+
+function test_enum_literal()
+    assert_equal(0, hw_capnp.T1.EnumType1["enum1"])
+    assert_equal("enum1", hw_capnp.T1.EnumType1Str[0])
+
+    assert_equal(3, hw_capnp.T1.EnumType1["wEirdENum4"])
+    assert_equal("wEirdENum4", hw_capnp.T1.EnumType1Str[3])
+
+    assert_equal(4, hw_capnp.T1.EnumType1["UPPER-DASH"])
+    assert_equal("UPPER-DASH", hw_capnp.T1.EnumType1Str[4])
+end
+
+function test_imported_constant()
+    assert_equal(1, hw_capnp.S1.flag1)
+    assert_equal(2, hw_capnp.S1.flag2)
+    assert_equal("Hello", hw_capnp.S1.flag3)
+end
+
+function test_uint64()
+    local uint64p = ffi.new("uint64_t[?]", 1)
+    local uint32p = ffi.cast("uint32_t *", uint64p)
+    uint32p[0] = 1
+    uint32p[1] = 2
+
+    local data = {
+        u64 = uint64p[0],
+    }
+
+    assert_equal(128, hw_capnp.T1.calc_size(data))
+    local bin   = hw_capnp.T1.serialize(data)
+    copy  = hw_capnp.T1.parse(bin, copy)
+    assert_equal(0, copy.i0)
+    assert_equal(0, copy.i1)
+    assert_equal(0, copy.i2)
+    assert_equal(false, copy.b0)
+    assert_equal(false, copy.b1)
+    assert_equal(0, copy.i3)
+    assert_equal("enum1", copy.e0)
+    assert_equal("none", copy.e1)
+    assert_nil(copy.s0)
+    assert_nil(copy.l0)
+    assert_nil(copy.t0)
+
+    assert_equal("cdata", type(copy.u64))
+    assert_equal("8589934593ULL", tostring(copy.u64))
+
+end
+
+function test_lower_space_naming()
+    local data = {
+        e1 = "lower space"
+    }
+
+    assert_equal(128, hw_capnp.T1.calc_size(data))
+    local bin   = hw_capnp.T1.serialize(data)
+    copy  = hw_capnp.T1.parse(bin, copy)
+    assert_equal("lower space", copy.e1)
+end
+
+function test_type_check_when_calc_size()
+    -- data type should be checked when calculating size
+    local data = {
+        s0 = "I should be a lua table, not a string",
+    }
+
+    assert_equal(128, hw_capnp.T1.calc_size(data))
+    local bin   = hw_capnp.T1.serialize(data)
+    copy  = hw_capnp.T1.parse(bin, copy)
+    assert_equal(0, copy.i0)
+    assert_equal(0, copy.i1)
+    assert_equal(0, copy.i2)
+    assert_equal(false, copy.b0)
+    assert_equal(false, copy.b1)
+    assert_equal(0, copy.i3)
+    assert_equal("enum1", copy.e0)
+    assert_equal("none", copy.e1)
+    assert_nil(copy.s0)
+    assert_nil(copy.l0)
+    assert_nil(copy.t0)
 end
 
 return _G
